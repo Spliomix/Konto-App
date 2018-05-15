@@ -12,8 +12,7 @@ Konto::Konto(std::shared_ptr<Person> p){
 	}
 
 bool Konto::add_zeichnungsberechtigt(std::shared_ptr<Person> p){
-	//if person schon vorhanden return false;
-	//std::cout << "Zeichnungsbrechntigt: p : " << p->get_name()<<std::endl;
+	if (zeichnungsberechtigt.size()>=10)return false;
 	zeichnungsberechtigt.push_back(p);
 	return true;
 }
@@ -62,7 +61,7 @@ Person::Person(std::string name) {
 	bool Person::konto_teilen(Konto& k, Person& p){
 		//Zeichnungsberechtigten ergänzen
 		auto sp = std::make_shared<Person>(p);
-		k.add_zeichnungsberechtigt(sp);
+		if (!k.add_zeichnungsberechtigt(sp))return false;
 		p.neues_konto(k);
 		return true;//checken
 }
@@ -77,7 +76,7 @@ Person::Person(std::string name) {
 		return ko;//checken
 	}
 	void Person::kuendigen() {
-		;
+		konten.clear();
 	}
 
 std::string Person::get_name(){
@@ -108,6 +107,7 @@ std::ostream& Bank::print(std::ostream & os) const {
 	}
 
 	std::string Bank::neuerKunde(std::string name){
+		if (kunden.find(name) == kunden.end())return "0";
 		auto it=kunden.emplace(name, std::make_shared<Person>(name));
 		auto k=it.first->second->neues_konto();//erstelle für die frisch erstellte Person ein Konto
 		konten.emplace(k->get_kn(), k);
@@ -116,11 +116,13 @@ std::ostream& Bank::print(std::ostream & os) const {
 
 	std::shared_ptr<Person> Bank::get_kunde(std::string name) {
 		auto it=kunden.find(name);
+		if (it == kunden.end())return nullptr;
 		return it->second;
 	}
 	std::string Bank::neues_konto(Person& p, Konto& k) {
 		//ordnet ein bestehendes Konto der Person zu
 		//fügt das neu erstelle Konto in die unordered map
+		if (konten.find(k.get_kn()) == konten.end())return "0";
 			konten.emplace(p.neues_konto(k)->get_kn(), p.neues_konto(k));
 			return k.get_kn();
 	}
@@ -132,9 +134,13 @@ std::ostream& Bank::print(std::ostream & os) const {
 		return temp;
 	}
 	std::shared_ptr<Konto> Bank::get_Konto(std::string knr) {
+		if (konten.find(knr) == konten.end())return nullptr;
 		return (konten.find(knr)->second);
 	}
-
+	void Bank::kuendigen(Person& p) {
+		p.kuendigen();
+		kunden.erase(kunden.find(p.get_name()));
+	}
 
 
 

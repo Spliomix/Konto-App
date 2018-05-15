@@ -57,6 +57,7 @@ public:
 	std::string neues_konto(Person& p);//geht
 	std::ostream& print(std::ostream&) const;//geht
 	std::shared_ptr<Konto> get_Konto(std::string);//geht
+	void kuendigen(Person& p);
 };
 
 class Girokonto{
