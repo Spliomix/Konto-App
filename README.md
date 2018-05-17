@@ -27,11 +27,22 @@ int main()
   std::shared_ptr<Bank>Raiffeisen(new Bank);    //neue Bank erstellen
   std::string spliomix_KNR1=Raiffeisen->neuerKunde("Spliomix"); //Kontonummer von Spliomix
   std::string spliomix_KNR2=Raiffeisen->neues_konto(*(Raiffeisen->get_kunde("Spliomix"))); //erstellt ein zweites Konto für Spliomix
+  return 0;
 }
 
 ```
 
+## Einzahlen, Auszaheln und Kontotand von einem Konto
+```cpp
+  Raiffeisen->get_Konto(spliomix_KNR1)->einzahlen(1200);
+  Raiffeisen->get_Konto(spliomix_KNR1)->auszahlen(200);
+  Raiffeisen->get_Konto(spliomix_KNR1)->get_kontostand();
+```
 
+## Überweisen von einem Konto
+```cpp
+Raiffeisen->get_Konto(spliomix_KNR1)->ueberweisen(500, *(Raiffeisen->get_Konto(spliomix_KNR2)));
+```
 
   descriptions of the class methods are in the header files
 
