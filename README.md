@@ -14,7 +14,7 @@ you get the bank number from the new bank Account
 
 now you can choose between some methods:
 transfere money, make a withdrawal or deposit money...
-Press <help> for more information
+Press "help" for more information
   
   
 # Own Main Implementation
