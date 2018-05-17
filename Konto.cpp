@@ -1,5 +1,7 @@
-#include"stdafx.h"
+﻿//#include"stdafx.h"
+
 #include"Konto.h"
+
 
 ///////////////////KONTO
 int Konto::k = 0;
@@ -54,114 +56,68 @@ std::ostream& Konto::print (std::ostream& os) const{
 return os;
 }
 
-/////////////////////////////////Person
-Person::Person(std::string name) {
-	this->name = name;
-}
-	bool Person::konto_teilen(Konto& k, Person& p){
-		//Zeichnungsberechtigten ergänzen
-		auto sp = std::make_shared<Person>(p);
-		if (!k.add_zeichnungsberechtigt(sp))return false;
-		p.neues_konto(k);
-		return true;//checken
-}
-	std::shared_ptr<Konto> Person::neues_konto(){
-		std::shared_ptr<Konto> k{std::make_shared<Konto>(shared_from_this())};
-		konten.push_back(k);
-		return k;//checken
-	}
-	std::shared_ptr<Konto> Person::neues_konto(Konto& k) {
-		std::shared_ptr<Konto> ko{ std::make_shared<Konto>(k) };
-		konten.push_back(ko);
-		return ko;//checken
-	}
-	void Person::kuendigen() {
-		konten.clear();
-	}
 
-std::string Person::get_name(){
-	return name;
+
+
+	Girokonto::Girokonto(std::shared_ptr<Person> p):Konto(p){
 }
 
-std::vector<std::shared_ptr<Konto>> Person::get_konten() {
-	return konten;
+	void Girokonto::berechnung_geb(unsigned u){
+	geb+=2;
 }
 
-std::ostream& Person::print(std::ostream & os) const {
-	os << "Name: " << name << "\n";
-	for (auto &elem : konten) {
-		os << "Konto Nummer: "<<elem->get_kn()<<"\n";
-	}
-		
+
+std::ostream& Girokonto::print(std::ostream & os) const {
+		os<<"Giro Gebühren\n"<<geb<<"\n";
 		return os;
 	}
 
-
-////////////////////////Bank
-std::ostream& Bank::print(std::ostream & os) const {
-	for(auto & elem: kunden)
-				os<<"Inhalt der Bank Unordered Map -kunden-"<<elem.first<<"\n";
-	for (auto & elem : konten)
-		os << "Inhalt der Bank Unordered Map -Konto-" << elem.first << *(elem.second) << "\n";
-		return os;
+bool Girokonto::ueberweisen(unsigned betrag, Konto& ziel) {
+	
+	if (ziel.auszahlen(betrag)) {
+		berechnung_geb(betrag);
+		return true;
 	}
+	return false;
+}
 
-	std::string Bank::neuerKunde(std::string name){
-		if (kunden.find(name) == kunden.end())return "0";
-		auto it=kunden.emplace(name, std::make_shared<Person>(name));
-		auto k=it.first->second->neues_konto();//erstelle für die frisch erstellte Person ein Konto
-		konten.emplace(k->get_kn(), k);
-		return k->get_kn();
+
+
+
+
+Businesskonto::Businesskonto(std::shared_ptr<Person> p) :Konto(p) {
+}
+
+void Businesskonto::berechnung_geb(unsigned u) {
+	geb =geb+ 0.2*u;
+}
+
+bool Businesskonto::ueberweisen(unsigned betrag, Konto& ziel) {
+
+	if (ziel.auszahlen(betrag)) {
+		berechnung_geb(betrag);
+		return true;
 	}
-
-	std::shared_ptr<Person> Bank::get_kunde(std::string name) {
-		auto it=kunden.find(name);
-		if (it == kunden.end())return nullptr;
-		return it->second;
-	}
-	std::string Bank::neues_konto(Person& p, Konto& k) {
-		//ordnet ein bestehendes Konto der Person zu
-		//fügt das neu erstelle Konto in die unordered map
-		if (konten.find(k.get_kn()) == konten.end())return "0";
-			konten.emplace(p.neues_konto(k)->get_kn(), p.neues_konto(k));
-			return k.get_kn();
-	}
-	std::string Bank::neues_konto(Person& p) {
-		//erstellt ein neues Konto für diese Person
-		//fügt das neu erstelle Konto in die unordered map
-		auto temp = p.neues_konto()->get_kn();
-		konten.emplace(temp, p.neues_konto());
-		return temp;
-	}
-	std::shared_ptr<Konto> Bank::get_Konto(std::string knr) {
-		if (konten.find(knr) == konten.end())return nullptr;
-		return (konten.find(knr)->second);
-	}
-	void Bank::kuendigen(Person& p) {
-		p.kuendigen();
-		kunden.erase(kunden.find(p.get_name()));
-	}
+	return false;
+}
 
 
-
-
-
-
-
-std::ostream& operator<<(std::ostream& os, const Bank& b) {
-	b.print(os);
+std::ostream& Businesskonto::print(std::ostream & os) const {
+	os << "Businesskonto Gebühren:\n" << geb << "\n";
 	return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Person& p) {
-	p.print(os);
-	return os;
-}
 
 std::ostream& operator<<(std::ostream& os, const Konto& k) {
 	k.print(os);
 	return os;
 }
+
+std::ostream& operator<<(std::ostream& os, const Girokonto& g) {
+	g.print(os);
+	return os;
+}
+
 
 
 
