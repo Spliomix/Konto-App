@@ -37,9 +37,7 @@ bool Konto::add_zeichnungsberechtigt(std::shared_ptr<Person> p){
 		return true;
 }
 
-std::shared_ptr<Konto> Konto::get_shared(){
-	return shared_from_this();
-}
+
 
 int Konto::get_kontostand() {
 	return kontostand;

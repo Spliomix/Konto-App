@@ -11,7 +11,7 @@
 class Person;
 class Bank;
 
-class Konto : public std::enable_shared_from_this<Konto> {
+class Konto : public std::enable_shared_from_this<Konto> {//: public std::enable_shared_from_this<Konto> damit shared pointer von der Klasse geshared werden darf
 private:
 	std::string kontonummer;
 	int kontostand{0};
@@ -19,28 +19,26 @@ private:
 	int gebuehren{0};
 	std::vector<std::weak_ptr<Person>> zeichnungsberechtigt; //max10 mind. 1
 public:
-	static int k;//für die Kontonummer
+	static int k;//!!!!Danger, das muss noch geändert werden
 	Konto(std::shared_ptr<Person>);
-	Konto(std::shared_ptr<Person>, int);//neu
-	void einzahlen (unsigned betrag);//geht
-	bool auszahlen (unsigned betrag);//geht
-	virtual bool ueberweisen (unsigned betrag, Konto& ziel);//geht
+	void einzahlen (unsigned betrag);
+	bool auszahlen (unsigned betrag);
+	virtual bool ueberweisen (unsigned betrag, Konto& ziel);//virtual damit ich von Giro und Buiness drauf zugreifen kann
 	int get_kontostand();//geht
 	std::string get_kn();//geht
-	bool add_zeichnungsberechtigt(std::shared_ptr<Person> p);//geht
-	std::shared_ptr<Konto> get_shared();
-	virtual void berechnung_geb(unsigned)=0;
-	virtual std::ostream& print (std::ostream&) const;//geht
+	bool add_zeichnungsberechtigt(std::shared_ptr<Person> p);//fügt im Vektor zeichnungsberechtigt eine neue Person ein
+	virtual void berechnung_geb(unsigned)=0;//ähnlich wie überweisen nur muss diese Methode =0 gesetzt werden damit sie pure virtuell ist
+	virtual std::ostream& print (std::ostream&) const;
 };
 
 
-class Girokonto:public Konto, public std::enable_shared_from_this<Girokonto>{
-	double geb{0};
+class Girokonto:public Konto, public std::enable_shared_from_this<Girokonto>{//Girokonto:public Konto lässt die Klasse Girokonto von Konto erben und da zugriff auf alle public Methoden
+	double geb{0};//Gebühren werden bei jeder überweisung aufsummiert
 public:
 	Girokonto(std::shared_ptr<Person>);
 	std::ostream& print (std::ostream&) const;
-	void berechnung_geb(unsigned);
-	bool ueberweisen(unsigned betrag, Konto& ziel);
+	void berechnung_geb(unsigned);//Methode die bei Konto Virtuell ist und berechnet die Gebühren
+	bool ueberweisen(unsigned betrag, Konto& ziel);//Methode die bei Konto Virtuell ist
 
 };
 
