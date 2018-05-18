@@ -1,4 +1,8 @@
 # Konto-App
+```sh
+$ g++ Konto.cpp Person.cpp Bank.cpp KontoApp.cpp -o a
+$ ./a
+```
 Example: 
 ```sh
 First you have to choose a bank with
