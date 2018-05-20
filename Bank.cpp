@@ -47,6 +47,7 @@ std::ostream& Bank::print(std::ostream & os) const {
 	void Bank::kuendigen(Person& p) {
 		p.kuendigen();
 		kunden.erase(kunden.find(p.get_name()));
+		//wenn keiner Person mehr Zugriff auf das Konto hat, dann muss das Konto in der unordered map auch gelöscht werden
 	}
 
 
