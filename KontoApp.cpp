@@ -27,7 +27,7 @@ std::string login(std::shared_ptr<Bank> b, bool &logged_in) {
 	return cmd;
 }
 
-enum class Code { quit = 0, change_bank,logout, einzahlen, auszahlen, transfer, teilen, konto_erstellen, person_erstellen, all, help };
+enum class Code { quit = 0, change_bank,logout,kuendigen, einzahlen, auszahlen, transfer, teilen, konto_erstellen, person_erstellen, all, help };
 
 struct Command {
 	Code code;
@@ -41,6 +41,7 @@ std::vector<Command> commands = {
 { Code::change_bank, "change_bank", "change the actual bank", false, false },
 { Code::einzahlen, "einzahlen", "bring money on the bank", true, false },
 { Code::logout, "logout", "logout", true, false },
+{ Code::kuendigen, "kuendigen", "kuendigen", true, false },
 { Code::teilen, "teilen", "share Konto", true, false },
 { Code::konto_erstellen, "new_konto", "create new konto", true, false },
 { Code::all, "all", "show alle person/Kontos who are created by this bank", true, false },
@@ -182,9 +183,8 @@ int main()
 			std::cout << "Geben Sie das gewünschte Konto ein: ";
 			std::cin >> knr;
 
-			//2 Probleme
+			//1 Probleme
 			//1. überweisen geht so nur in innerhalb einer Bank
-			//2. ueberweisen wäre besser mit einem pointer?
 			akt_bank->get_Konto(akt_knr)->ueberweisen(betrag, *(akt_bank->get_Konto(knr)));
 			break;
 		}case Code::logout: {//not tested
@@ -202,6 +202,11 @@ int main()
 			std::cout << "Geben Sie bitte den Namen an mit dem das Konto geteilt werden soll: \n";
 			std::cin >> cmd;
 			temp_p->konto_teilen(akt_bank->get_Konto(temp_knr), *(akt_bank->get_kunde(cmd)));
+			break;
+		}case Code::kuendigen: {//not tested
+			std::cout << "Geben Sie bitte den Namen an der gekündigt wird: \n";
+			std::cin >> cmd;
+			akt_bank->kuendigen(*akt_bank->get_kunde(cmd));
 			break;
 		}
 
