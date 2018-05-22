@@ -14,6 +14,14 @@ Konto::Konto(std::shared_ptr<Person> p){
 	}
 
 bool Konto::add_zeichnungsberechtigt(std::shared_ptr<Person> p){
+	for(auto it = zeichnungsberechtigt.begin(); it!=zeichnungsberechtigt.end();){
+		if(it->expired()){
+			it=zeichnungsberechtigt.erase(it);
+		}else {
+			++it;
+		}
+
+	}
 	if (zeichnungsberechtigt.size()>=10)return false;
 	zeichnungsberechtigt.push_back(p);
 	return true;
