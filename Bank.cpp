@@ -45,8 +45,10 @@ std::ostream& Bank::print(std::ostream & os) const {
 		return (konten.find(knr)->second);
 	}
 	void Bank::kuendigen(Person& p) {
-		for(auto & elem : p.get_konten())
-			konten.erase(elem->get_kn());
+		for(auto & elem : p.get_konten()){
+			if(konten.find(elem->get_kn())->second.use_count()==1)
+				konten.erase(elem->get_kn());
+		}
 		p.kuendigen();
 		kunden.erase(kunden.find(p.get_name()));
 	}
