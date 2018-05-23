@@ -80,7 +80,8 @@ std::ostream& Girokonto::print(std::ostream & os) const {
 
 bool Girokonto::ueberweisen(unsigned betrag, Konto& ziel) {
 	
-	if (ziel.auszahlen(betrag)) {
+		if (this->auszahlen(betrag)) {
+		ziel.einzahlen(betrag);
 		berechnung_geb(betrag);
 		return true;
 	}
@@ -100,7 +101,8 @@ void Businesskonto::berechnung_geb(unsigned u) {
 
 bool Businesskonto::ueberweisen(unsigned betrag, Konto& ziel) {
 
-	if (ziel.auszahlen(betrag)) {
+	if (this->auszahlen(betrag)) {
+		ziel.einzahlen(betrag);
 		berechnung_geb(betrag);
 		return true;
 	}
