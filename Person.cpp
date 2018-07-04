@@ -13,22 +13,20 @@ Person::Person(std::string name) {
 		p.neues_konto(k);
 		return true;//checken
 }
-	std::shared_ptr<Konto> Person::neues_konto(){
-		if (alternate) {
+	std::shared_ptr<Konto> Person::neues_konto(bool type){
+		if (type) {
 			std::shared_ptr<Girokonto> k{ std::make_shared<Girokonto>(shared_from_this()) };
 			konten.push_back(k);
-			return k;//checken
-			alternate = !alternate;
+			return k;//checken	
 		}
 		std::shared_ptr<Businesskonto> k{ std::make_shared<Businesskonto>(shared_from_this()) };
 		konten.push_back(k);
-		alternate = !alternate;
 		return k;//checken
 	}
 	std::shared_ptr<Konto> Person::neues_konto(std::shared_ptr<Konto> k) {
-		std::shared_ptr<Konto> ko{ k };
-		konten.push_back(ko);
-		return ko;//checken
+		if (k->add_zeichnungsberechtigt(shared_from_this()))
+			konten.push_back(k);
+		return k;//checken
 	}
 	void Person::kuendigen() {
 		konten.clear();

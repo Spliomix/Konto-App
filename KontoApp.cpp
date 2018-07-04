@@ -10,6 +10,40 @@
 #include <iomanip>
 #include <numeric>
 
+
+
+
+int main() {
+	std::shared_ptr<Bank> b = std::make_shared<Bank>();
+	std::string draco_knr = b->neuerKunde("Draco Malfoy", false);
+	std::string harry_knr = b->neuerKunde("Harry Potter", true);
+	
+	b->neues_konto(*(b->get_kunde("Harry Potter")), b->get_Konto(draco_knr));
+
+	b->get_Konto(draco_knr)->einzahlen(100);
+	b->get_Konto(draco_knr)->ueberweisen(15, *b->get_Konto(harry_knr));
+	b->get_Konto(harry_knr)->ueberweisen(30, *b->get_Konto(draco_knr));
+
+	std::cout << b->get_Konto(draco_knr)->get_kontostand() << "\n";
+	std::cout << *b->get_Konto(draco_knr) << "\n";
+	std::cout << b->get_Konto(harry_knr)->get_kontostand() << "\n";
+	std::cout << *b->get_Konto(harry_knr) << "\n";
+	while (1);
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 std::string login(std::shared_ptr<Bank> b, bool &logged_in) {
 	std::string cmd;
 	std::cout << "Geben sie die Kontonummer ein, falls sie diese nicht wissen drucken sie die Taste >R<: ";
@@ -216,4 +250,4 @@ int main()
 	
     return 0;
 }
-
+*/

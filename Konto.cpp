@@ -72,7 +72,7 @@ return os;
 	geb+=2;
 }
 
-
+	
 std::ostream& Girokonto::print(std::ostream & os) const {
 		os<<"Giro Gebühren\n"<<geb<<"\n";
 		return os;

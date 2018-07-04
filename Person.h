@@ -20,7 +20,7 @@ public:
 	Person(){}
 	Person(std::string name);
 	bool konto_teilen(std::shared_ptr<Konto> k, Person& p);
-	std::shared_ptr<Konto> neues_konto();
+	std::shared_ptr<Konto> neues_konto(bool type);
 	std::shared_ptr<Konto> neues_konto(std::shared_ptr<Konto>);
 	std::string get_name();
 	std::vector<std::shared_ptr<Konto>> get_konten();//gibt alle Konten dieser Person zurück
