@@ -28,6 +28,32 @@ int main() {
 	std::cout << *b->get_Konto(draco_knr) << "\n";
 	std::cout << b->get_Konto(harry_knr)->get_kontostand() << "\n";
 	std::cout << *b->get_Konto(harry_knr) << "\n";
+
+
+
+
+
+	Z_Gryffindor g;
+	Z_Slytherin s;
+	g.lerne(10);
+	s.lerne(10);
+	s.print();
+	std::cout<< "\n";
+	g.print();
+	std::cout << "\n";
+
+
+
+
+	std::vector<std::shared_ptr<Zauberer>>v;
+	v.push_back(std::shared_ptr<Zauberer>(&g));
+	v.push_back(std::shared_ptr<Zauberer>(&s));
+	std::shared_ptr<Schule> schul = std::make_shared<Schule>(v);
+	schul->unterrichten(3);
+	s.print();
+	std::cout << "\n";
+	g.print();
+
 	while (1);
 	return 0;
 }

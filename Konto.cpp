@@ -129,3 +129,39 @@ std::ostream& operator<<(std::ostream& os, const Girokonto& g) {
 
 
 
+
+
+
+	bool Zauberer::lerne(int stunden) {
+		if (lerneffekt(stunden) + zauberwissen <= 100 && lerneffekt(stunden) + zauberwissen >= 0) {
+			zauberwissen = zauberwissen + lerneffekt(stunden);
+			return true;
+		}
+		return false;
+	}
+	void Zauberer::print()const {
+		std::cout << zauberwissen;
+	}
+
+
+	int Z_Gryffindor::lerneffekt(int stunden) const {
+		return stunden * 5;
+	}
+
+	int Z_Slytherin::lerneffekt(int stunden) const {
+		return stunden * 7;
+	}
+
+
+
+	Schule::Schule(std::vector<std::shared_ptr<Zauberer>> v) {
+		this->v = v;
+	}
+	bool Schule::unterrichten(int stunden) {
+		bool helper = false;
+		for (auto& elem : v) {
+			if (elem->lerne(stunden))
+				helper = true;
+		}
+		return helper;
+	}

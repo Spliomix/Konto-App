@@ -57,3 +57,26 @@ std::ostream& operator<<(std::ostream&, const Konto&);
 std::ostream& operator<<(std::ostream&, const Girokonto&);
 
 
+class Zauberer {
+	int zauberwissen=0;
+public:
+	int virtual lerneffekt(int stunden) const=0;
+	bool lerne(int stunden);
+	void print()const;
+};
+
+class Z_Gryffindor : public Zauberer {
+	int lerneffekt(int stunden) const;
+};
+class Z_Slytherin : public Zauberer {
+	int lerneffekt(int stunden) const;
+};
+
+
+class Schule {
+	std::vector<std::shared_ptr<Zauberer>>v;
+public:
+	Schule(std::vector<std::shared_ptr<Zauberer>> v);
+	bool unterrichten(int stunden);
+};
+
