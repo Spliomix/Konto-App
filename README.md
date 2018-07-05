@@ -9,7 +9,7 @@ int main()
 {
   std::shared_ptr<Bank>Raiffeisen(new Bank);    //neue Bank erstellen
   std::string spliomix_KNR1=Raiffeisen->neuerKunde("Spliomix", false); //Kontonummer von Spliomix /false for Businneskonto
-  std::string spliomix_KNR2=Raiffeisen->neues_konto(*(Raiffeisen->get_kunde("Spliomix"))); //erstellt ein zweites Konto für Spliomix
+  std::string spliomix_KNR2=Raiffeisen->neues_konto(*(Raiffeisen->get_kunde("Spliomix")),true); //erstellt ein zweites Konto für Spliomix/true for Girokonto
   return 0;
 }
 
